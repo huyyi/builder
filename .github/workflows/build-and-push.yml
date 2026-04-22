@@ -25,11 +25,14 @@ jobs:
         id: collect
         run: |
           set -euo pipefail
+          zero_sha="0000000000000000000000000000000000000000"
 
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" || "${{ github.event.before }}" == "0000000000000000000000000000000000000000" ]]; then
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" || "${{ github.event.before }}" == "${zero_sha}" ]]; then
             changed_files="$(git ls-files '*/Dockerfile')"
-          else
+          elif git cat-file -e "${{ github.event.before }}^{commit}" 2>/dev/null; then
             changed_files="$(git diff --name-only "${{ github.event.before }}" "${{ github.sha }}" -- '*/Dockerfile')"
+          else
+            changed_files="$(git ls-files '*/Dockerfile')"
           fi
 
           if [[ -z "${changed_files}" ]]; then
