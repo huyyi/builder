@@ -26,9 +26,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            changed_files="$(git ls-files '*/Dockerfile')"
-          elif [[ "${{ github.event.before }}" == "0000000000000000000000000000000000000000" ]]; then
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" || "${{ github.event.before }}" == "0000000000000000000000000000000000000000" ]]; then
             changed_files="$(git ls-files '*/Dockerfile')"
           else
             changed_files="$(git diff --name-only "${{ github.event.before }}" "${{ github.sha }}" -- '*/Dockerfile')"
@@ -66,7 +64,7 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     needs: detect
-    if: ${{ needs.detect.outputs.matrix != '[]' }}
+    if: needs.detect.outputs.matrix != '[]'
     strategy:
       fail-fast: false
       matrix:
