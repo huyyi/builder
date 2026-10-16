@@ -1,0 +1,24 @@
+{
+	admin off
+	auto_https off
+}
+
+:8080 {
+	@root path /
+	redir @root /dsh/ 308
+
+	@dsh_no_slash path /dsh
+	redir @dsh_no_slash /dsh/ 308
+
+	handle_path /dsh/* {
+		reverse_proxy 127.0.0.1:{$DSH_WEB_PORT}
+	}
+
+	# Fallback paths for clients that accidentally request root-prefixed assets/APIs.
+	@root_fallback path /api/* /assets/* /plugins/* /index.html /favicon.ico /robots.txt
+	handle @root_fallback {
+		reverse_proxy 127.0.0.1:{$DSH_WEB_PORT}
+	}
+
+	respond "Not Found" 404
+}
