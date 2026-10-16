@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     DSH_WEB_PORT=3080
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends ca-certificates curl git caddy \
+    && apt-get install -y --no-install-recommends ca-certificates curl git caddy openssh-server \
     && rm -rf /var/lib/apt/lists/*
 
 RUN set -eux; \
@@ -29,12 +29,12 @@ RUN useradd --create-home --shell /bin/bash dsh \
 
 COPY Caddyfile /etc/caddy/Caddyfile
 COPY entrypoint.sh /usr/local/bin/entrypoint
-RUN chmod 755 /usr/local/bin/entrypoint
+COPY dsh-stack.sh /usr/local/bin/dsh-stack
+RUN chmod 755 /usr/local/bin/entrypoint /usr/local/bin/dsh-stack
 
-USER dsh
 WORKDIR /home/dsh
 
-EXPOSE 8080
+EXPOSE 8080 2222
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
   CMD curl -fsS http://127.0.0.1:8080/dsh/ >/dev/null || exit 1

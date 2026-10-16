@@ -14,3 +14,7 @@
 - 访问根路径 `/` 会自动重定向到 `/dsh/`
 - `/dsh/*` 会转发到 `dsh web`
 - 同时兼容误发到根路径的 `/api/*`、`/assets/*` 等请求，避免在路径前缀代理场景下出现 404
+- 支持 SSH 调试/开发（默认开启，监听 `2222`），可通过 `ENABLE_SSH=false` 关闭
+  - `DSH_SSH_AUTHORIZED_KEYS`：注入公钥（推荐）
+  - `DSH_SSH_PASSWORD`：为 `dsh` 用户设置密码并启用密码登录
+  - `DSH_SSH_PORT`：自定义 SSH 端口（默认 `2222`）
