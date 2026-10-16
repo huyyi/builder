@@ -9,11 +9,10 @@
 
 ## deepseek-harness
 
-新增 `deepseek-harness/` 镜像目录，用于从源码构建 `dsh`，并通过内置 Caddy 反向代理提供路径前缀兼容：
+新增 `deepseek-harness/` 镜像目录，用于从源码构建 `dsh`，并通过内置 Caddy 反向代理暴露 Web UI：
 
-- 访问根路径 `/` 会自动重定向到 `/dsh/`
-- `/dsh/*` 会转发到 `dsh web`
-- 同时兼容误发到根路径的 `/api/*`、`/assets/*` 等请求，避免在路径前缀代理场景下出现 404
+- Caddy 将根路径请求直接反代到 `dsh web`
+- 默认对 `/` 与 `/index.html` 禁缓存，并对 `/assets/*` 设置长期缓存
 - 支持 SSH 调试/开发（默认开启，监听 `2222`），可通过 `ENABLE_SSH=false` 关闭
   - `DSH_SSH_AUTHORIZED_KEYS`：注入公钥（推荐）
   - `DSH_SSH_PASSWORD`：为 `dsh` 用户设置密码并启用密码登录

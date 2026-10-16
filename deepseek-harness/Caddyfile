@@ -4,21 +4,14 @@
 }
 
 :8080 {
-	@root path /
-	redir @root /dsh/ 308
+	@index path / /index.html
+	header @index Cache-Control "no-store"
 
-	@dsh_no_slash path /dsh
-	redir @dsh_no_slash /dsh/ 308
+	@assets path /assets/*
+	header @assets Cache-Control "public, max-age=31536000, immutable"
 
-	handle_path /dsh/* {
-		reverse_proxy 127.0.0.1:{$DSH_WEB_PORT}
+	reverse_proxy 127.0.0.1:{$DSH_WEB_PORT} {
+		header_up Host 127.0.0.1:{$DSH_WEB_PORT}
+		header_up Origin http://127.0.0.1:{$DSH_WEB_PORT}
 	}
-
-	# Fallback paths for clients that accidentally request root-prefixed assets/APIs.
-	@root_fallback path /api/* /assets/* /plugins/* /index.html /favicon.ico /robots.txt
-	handle @root_fallback {
-		reverse_proxy 127.0.0.1:{$DSH_WEB_PORT}
-	}
-
-	respond "Not Found" 404
 }
