@@ -17,3 +17,9 @@
   - `DSH_SSH_AUTHORIZED_KEYS`：注入公钥（推荐）
   - `DSH_SSH_PASSWORD`：为 `dsh` 用户设置密码并启用密码登录
   - `DSH_SSH_PORT`：自定义 SSH 端口（默认 `2222`）
+- 镜像构建时会预装以下插件：
+  - `zhu1090093659/dsh-web`（`@linxin666/dsh-web-all`，web profile）
+  - `ccch1mneyyy/dsh-TUI`（`@deepseek-harness-tui/dsh-tui`，dsh-tui profile）
+  - `JUANWANG-BUAA/dsh-full-remote`（`dsh-full-remote`，web profile）
+  - `omdsh-dev/dsh-genui`（`@changfenhuang/dsh-genui`，web profile）
+  - `wingsky-1/dsh-skill-explorer`（GitHub 安装，web profile）

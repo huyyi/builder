@@ -27,6 +27,13 @@ RUN set -eux; \
 RUN useradd --create-home --shell /bin/bash dsh \
     && chown -R dsh:dsh /opt/deepseek-harness
 
+RUN set -eux; \
+    runuser -u dsh -- env HOME=/home/dsh dsh plugin --profile web add @linxin666/dsh-web-all@latest; \
+    runuser -u dsh -- env HOME=/home/dsh dsh plugin --profile dsh-tui add @deepseek-harness-tui/dsh-tui@latest; \
+    runuser -u dsh -- env HOME=/home/dsh dsh plugin --profile web add dsh-full-remote@latest; \
+    runuser -u dsh -- env HOME=/home/dsh dsh plugin --profile web add @changfenhuang/dsh-genui@latest; \
+    runuser -u dsh -- env HOME=/home/dsh dsh plugin --profile web add github:wingsky-1/dsh-skill-explorer
+
 COPY Caddyfile /etc/caddy/Caddyfile
 COPY entrypoint.sh /usr/local/bin/entrypoint
 COPY dsh-stack.sh /usr/local/bin/dsh-stack
