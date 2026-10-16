@@ -29,10 +29,13 @@ RUN useradd --create-home --shell /bin/bash dsh \
 
 RUN set -eux; \
     runuser -u dsh -- env HOME=/home/dsh dsh plugin --profile web add @linxin666/dsh-web-all@latest; \
+    runuser -u dsh -- env HOME=/home/dsh dsh plugin --profile web add dsh-plugin-guide@latest; \
+    runuser -u dsh -- env HOME=/home/dsh dsh plugin --profile web add @linxin666/dsh-client-ui-skill-explorer@latest; \
     runuser -u dsh -- env HOME=/home/dsh dsh plugin --profile dsh-tui add @deepseek-harness-tui/dsh-tui@latest; \
     runuser -u dsh -- env HOME=/home/dsh dsh plugin --profile web add dsh-full-remote@latest; \
     runuser -u dsh -- env HOME=/home/dsh dsh plugin --profile web add @changfenhuang/dsh-genui@latest; \
-    runuser -u dsh -- env HOME=/home/dsh dsh plugin --profile web add github:wingsky-1/dsh-skill-explorer
+    runuser -u dsh -- env HOME=/home/dsh dsh plugin --profile web add github:wingsky-1/dsh-skill-explorer; \
+    runuser -u dsh -- env HOME=/home/dsh dsh plugin --profile web add dsh-prompt-enhance@latest
 
 COPY Caddyfile /etc/caddy/Caddyfile
 COPY entrypoint.sh /usr/local/bin/entrypoint
